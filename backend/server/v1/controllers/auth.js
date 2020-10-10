@@ -16,4 +16,32 @@ module.exports = {
             );
         }
     }, authSchema.login),
+
+    validateToken: (req, res, next) => {
+        const token = req.headers.authorization;
+
+        if (!token) {
+            return res
+                .status(401)
+                .json(
+                    createResponse(false, [
+                        'Access Token missing in authorization header',
+                        null,
+                        ErrorType.AuthError,
+                    ])
+                );
+        }
+
+        const [isTokenValid, decodedToken] = authServices.checkTokenValidity(token);
+
+        if (!isTokenValid) {
+            return res
+                .status(401)
+                .json(createResponse(false, ['Invalid Token'], null, ErrorType.AuthError));
+        }
+
+        // attach user info to the request context
+        req.user = decodedToken;
+        return next();
+    },
 };
