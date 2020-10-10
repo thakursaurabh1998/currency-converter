@@ -3,4 +3,8 @@ module.exports = {
         AuthError: 'AuthError',
         InternalError: 'InternalError',
     },
+    // in seconds
+    time: {
+        minute: 60,
+    },
 };

@@ -18,6 +18,7 @@ module.exports = {
         ttl: '1h',
     },
     fixer: {
+        baseUrl: 'http://data.fixer.io/api',
         accessKey: FIXER_ACCESS_KEY,
     },
     restcountries: {

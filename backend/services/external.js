@@ -1,8 +1,6 @@
-// http://data.fixer.io/api/latest?access_key=65a46a3c3c9c4a87ab07b6a72500b80d To fetch latest currency rates
+const Axios = require('axios').default;
 
 const config = require('../config');
-
-const Axios = require('axios').default;
 
 /**
  * Returns country data in a format which is independent of the data provider
@@ -11,24 +9,46 @@ const Axios = require('axios').default;
  *     fullName: string,
  *     population: number,
  *     officialCurrencies: {code: string, name: string, symbol: string}[]
- * }>}
+ * }[]>}
  */
 async function getCountryDetails(countryName) {
-    const response = await Axios.get(`${config.restcountries.baseUrl}/name/${countryName}`);
-    const massagedCountryData = response.data.map((cd) => {
-        return {
-            fullName: cd.name,
-            population: cd.population,
-            officialCurrencies: cd.currencies.map(({ code, name, symbol }) => ({
-                code,
-                name,
-                symbol,
-            })),
-        };
+    try {
+        const response = await Axios.get(`${config.restcountries.baseUrl}/name/${countryName}`);
+        const massagedCountryData = response.data.map((cd) => {
+            return {
+                fullName: cd.name,
+                population: cd.population,
+                officialCurrencies: cd.currencies.map(({ code, name, symbol }) => ({
+                    code,
+                    name,
+                    symbol,
+                })),
+            };
+        });
+        return massagedCountryData;
+    } catch (error) {
+        // if country not found
+        if (error.response.status === 404) {
+            return [];
+        }
+        throw error;
+    }
+}
+
+async function getCurrencyData() {
+    const response = await Axios.get(`${config.fixer.baseUrl}/latest`, {
+        params: {
+            access_key: config.fixer.accessKey,
+        },
     });
-    return massagedCountryData;
+
+    if (response.data.success) {
+        return response.data.rates;
+    }
+    throw new Error(response.data.error.info);
 }
 
 module.exports = {
     getCountryDetails,
+    getCurrencyData,
 };

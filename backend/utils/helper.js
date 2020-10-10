@@ -1,3 +1,7 @@
+function getCurrentEpochTime() {
+    return Number((Date.now() / 1000).toFixed());
+}
+
 function createResponse(success, errors, data, errorType) {
     return {
         success,
@@ -62,5 +66,6 @@ function verifyRequestSchema(controller, schemaValidator) {
 
 module.exports = {
     createResponse,
+    getCurrentEpochTime,
     verifyRequestSchema,
 };
