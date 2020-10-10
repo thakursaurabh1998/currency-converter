@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+import Converter from './Converter.js';
 import Loading from './Loading.js';
 import Login from './Login';
 import NotFound from './NotFound';
@@ -17,7 +18,7 @@ function NewRoute(path, component) {
 const openRoutes = [NewRoute(RoutesEnum.LOGIN, Login)];
 
 // All the secure routes go here
-const secureRoutes = [NewRoute(RoutesEnum.ROOT, () => <h1>converter</h1>)];
+const secureRoutes = [NewRoute(RoutesEnum.ROOT, Converter)];
 
 function getRoutes(secure) {
   const finalRoutes = (secure ? secureRoutes : openRoutes).map((route) => (

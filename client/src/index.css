@@ -50,3 +50,28 @@ code {
 .Login-card {
   margin-top: 50px;
 }
+
+.Login-page {
+  background-color: #282c34;
+  min-height: 100vh;
+}
+
+.Converter-logo {
+  margin: 5px;
+  margin-left: 15px;
+  margin-top: 15px;
+  height: 50px;
+  pointer-events: none;
+}
+
+.Converter-title {
+  margin: 15px;
+  color: #fff;
+  font-size: 190%;
+  font-weight: bold;
+}
+
+.Converter-page {
+  background-color: #282c34;
+  min-height: 100vh;
+}

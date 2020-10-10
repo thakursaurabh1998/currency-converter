@@ -28,7 +28,7 @@ function Login({ history }) {
       {isAuthenticated ? (
         <Redirect to={RoutesEnum.ROOT} />
       ) : (
-        <div style={{ backgroundColor: '#282c34', minHeight: '100vh' }}>
+        <div className="Login-page">
           <Row justify="center" align="middle">
             <header className="App-header">
               <img src={logo} className="App-logo" alt="logo" />
