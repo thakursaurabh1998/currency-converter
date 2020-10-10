@@ -8,7 +8,7 @@ const config = require('../config');
  * @returns {Promise<{
  *     fullName: string,
  *     population: number,
- *     officialCurrencies: {code: string, name: string, symbol: string}[]
+ *     officialCurrencies: {code: string, name: string, symbol: string, rate?: number}[]
  * }[]>}
  */
 async function getCountryDetails(countryName) {

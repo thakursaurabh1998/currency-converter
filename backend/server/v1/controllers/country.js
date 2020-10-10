@@ -1,24 +1,33 @@
 const { countrySchema } = require('../request-schema');
-const { verifyRequestSchema, createResponse } = require('../../../utils/helper');
+const {
+    verifyRequestSchema,
+    createResponse,
+    getCurrentEpochTime,
+} = require('../../../utils/helper');
 const { ErrorType } = require('../../../utils/constants');
 const { countryServices, currencyServices } = require('../../../services');
 
 module.exports = {
     search: verifyRequestSchema(async (req, res) => {
-        const { query: country, baseCurrency } = req.query;
+        const { query: country, baseCurrency = 'SEK' } = req.query;
         try {
             const countryData = await countryServices.searchCountryData(country);
-            const currencySet = countryData.reduce((currencyCodeSet, cd) => {
-                cd.officialCurrencies.forEach((oc) => {
-                    currencyCodeSet.add(oc.code);
-                });
-                return currencyCodeSet;
-            }, new Set());
-            const currencyData = await currencyServices.getCurrencyData(
-                Array.from(currencySet),
-                baseCurrency
+            await Promise.all(
+                countryData.map((cd) =>
+                    Promise.all(
+                        cd.officialCurrencies.map(async (oc) => {
+                            oc.rate = await currencyServices.getCurrencyData(oc.code, baseCurrency);
+                        })
+                    )
+                )
             );
-            res.json(createResponse(true, null, { countryData, currencyData }));
+            res.json(
+                createResponse(true, null, {
+                    base: baseCurrency,
+                    timestamp: getCurrentEpochTime(),
+                    countries: countryData,
+                })
+            );
         } catch (error) {
             req.log.error(error.message);
             res.status(500).json(
