@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const config = require('../config');
 const v1Routes = require('./v1/routes');
@@ -12,6 +13,17 @@ const app = express();
 app.use(requestLogger);
 app.use(cookieParser());
 app.use(bodyParser.json());
+
+if (config.environment !== 'production') {
+    app.use(
+        cors({
+            origin: ['http://localhost:3000'],
+            credentials: true,
+            allowedHeaders:
+                'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token, X-SC-JWT, Cache-Control',
+        })
+    );
+}
 
 app.get('/health', (req, res) => {
     res.status(200).json(createResponse(true, null, "I'm Healthy!"));
