@@ -11,13 +11,17 @@ assert.ok(SAMPLE_PASSWORD, 'SAMPLE_PASSWORD configuration is required.');
 
 module.exports = {
     server: {
-        port: PORT,
+        port: Number.parseInt(PORT, 10) || 5000,
     },
     auth: {
         secret: JWT_SECRET,
+        ttl: '1h',
     },
     fixer: {
         accessKey: FIXER_ACCESS_KEY,
+    },
+    restcountries: {
+        baseUrl: 'https://restcountries.eu/rest/v2',
     },
     sample: {
         email: SAMPLE_EMAIL,
