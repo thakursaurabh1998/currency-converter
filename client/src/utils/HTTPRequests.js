@@ -14,3 +14,26 @@ export async function login(email, password) {
     throw new Error('Authentication failed!');
   }
 }
+
+export async function searchCountryInfo(country, baseCurrency) {
+  try {
+    const response = await Axios.get(`${baseUrl}/v1/country/search`, {
+      params: {
+        query: country,
+        baseCurrency,
+      },
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
+
+    return response.data.data.countries;
+  } catch (error) {
+    // Relogin in case of 401
+    if (error.response.status === 401) {
+      localStorage.clear();
+      window.location.replace('/login');
+    }
+    throw new Error('Failed to fetch data!');
+  }
+}

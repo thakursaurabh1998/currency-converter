@@ -1,0 +1,62 @@
+import React, { useState } from 'react';
+import { Row, Select } from 'antd';
+import * as HTTPRequests from '../utils/HTTPRequests';
+import { openNotification } from '../utils/NotificationUtility';
+
+export default function SearchInput({ addCountryToList, baseCurrency }) {
+  const [isLoading, setLoading] = useState(false);
+  const [state, setState] = useState({
+    countryList: [],
+    value: null,
+  });
+
+  const handleSearch = async (countryQuery) => {
+    if (countryQuery) {
+      if (countryQuery.length < 3) {
+        return;
+      }
+      try {
+        setLoading(true);
+        const countryList = await HTTPRequests.searchCountryInfo(countryQuery, baseCurrency);
+        setState({
+          ...state,
+          countryList,
+        });
+      } catch (error) {
+        openNotification('BANNER', 'error', error.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setState({ ...state, countryList: [] });
+    }
+  };
+
+  const handleChange = (value) => {
+    addCountryToList(state.countryList.find((country) => country.fullName === value));
+    setState({ ...state, countryList: [], value: null });
+  };
+
+  const options = state.countryList.map((d) => (
+    <Select.Option key={d.fullName} value={d.fullName}>
+      {d.fullName}
+    </Select.Option>
+  ));
+  return (
+    <Row className="Converter-search-bar">
+      <Select
+        showSearch
+        value={state.value}
+        style={{ width: 300 }}
+        placeholder="Search by country name.. (type atleast 3 chars)"
+        showArrow={false}
+        onSearch={handleSearch}
+        onChange={handleChange}
+        notFoundContent="No matches"
+        loading={isLoading}
+      >
+        {options}
+      </Select>
+    </Row>
+  );
+}

@@ -75,3 +75,20 @@ code {
   background-color: #282c34;
   min-height: 100vh;
 }
+
+.Converter-search-bar {
+  margin: 15px;
+  width: 300px;
+  text-align: left;
+}
+
+.Converter-table {
+  margin: 15px;
+  min-width: 50vw;
+}
+
+.Converter-base-change {
+  margin: 15px;
+  width: 300px;
+  text-align: left;
+}
