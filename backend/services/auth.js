@@ -5,9 +5,11 @@ const config = require('../config');
 /**
  * Creates a JWT
  * @param {string} email
+ * @param {string | number} ttl
+ * @returns {string}
  */
-function createToken(email) {
-    const token = jwt.sign({ email }, config.auth.secret);
+function createToken(email, ttl) {
+    const token = jwt.sign({ email }, config.auth.secret, { expiresIn: ttl });
     return token;
 }
 

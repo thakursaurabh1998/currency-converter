@@ -2,13 +2,14 @@ const { authSchema } = require('../request-schema');
 const { verifyRequestSchema, createResponse } = require('../../../utils/helper');
 const { ErrorType } = require('../../../utils/constants');
 const { authServices } = require('../../../services');
+const config = require('../../../config');
 
 module.exports = {
     login: verifyRequestSchema((req, res) => {
         const { email, password } = req.body;
         const isVerified = authServices.verifyUser(email, password);
         if (isVerified) {
-            const token = authServices.createToken(email);
+            const token = authServices.createToken(email, config.auth.ttl);
             res.json(createResponse(true, null, { accessToken: token }));
         } else {
             res.status(401).json(
@@ -18,14 +19,14 @@ module.exports = {
     }, authSchema.login),
 
     validateToken: (req, res, next) => {
-        const token = req.headers.authorization;
+        const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
 
         if (!token) {
             return res
                 .status(401)
                 .json(
                     createResponse(false, [
-                        'Access Token missing in authorization header',
+                        'authorization header missing',
                         null,
                         ErrorType.AuthError,
                     ])
