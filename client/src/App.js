@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import InternalRouter from './components/InternalRouter';
+import { UserContext } from './store/contexts';
 
 function App() {
+  const { isAuthenticated } = useContext(UserContext);
+
   return (
     <div className="App">
-      <InternalRouter isAuthenticated={false} />
+      <InternalRouter isAuthenticated={isAuthenticated} />
     </div>
   );
 }
