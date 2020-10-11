@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Input, Row, Select } from 'antd';
 import * as HTTPRequests from '../utils/HTTPRequests';
+import { debounce } from '../utils/helper';
 import { openNotification } from '../utils/NotificationUtility';
 
 export default function SearchInput({ addCountryToList, baseCurrency }) {
@@ -10,7 +11,7 @@ export default function SearchInput({ addCountryToList, baseCurrency }) {
     value: null,
   });
 
-  const handleSearch = async (countryQuery) => {
+  const handleSearch = debounce(async (countryQuery) => {
     if (countryQuery) {
       if (countryQuery.length < 3) {
         return;
@@ -30,7 +31,7 @@ export default function SearchInput({ addCountryToList, baseCurrency }) {
     } else {
       setState({ ...state, countryList: [] });
     }
-  };
+  }, 500);
 
   const handleChange = (value) => {
     addCountryToList(state.countryList.find((country) => country.fullName === value));
@@ -47,6 +48,7 @@ export default function SearchInput({ addCountryToList, baseCurrency }) {
       <Input.Group compact>
         <Input disabled style={{ width: '30%' }} prefix="Country" />
         <Select
+          autoFocus
           showSearch
           value={state.value}
           style={{ width: '70%' }}

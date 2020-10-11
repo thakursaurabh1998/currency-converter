@@ -49,7 +49,7 @@ export async function getCurrenciesList() {
     return response.data.data;
   } catch (error) {
     // Relogin in case of 401
-    if (error.response.status === 401) {
+    if (error.response && error.response.status === 401) {
       localStorage.clear();
       window.location.replace('/login');
     }
