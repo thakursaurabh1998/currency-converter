@@ -1,7 +1,7 @@
 const { authSchema } = require('../request-schema');
 const { verifyRequestSchema, createResponse } = require('../../../utils/helper');
 const { ErrorType } = require('../../../utils/constants');
-const { authServices } = require('../../../services');
+const { authServices, rateLimitterService } = require('../../../services');
 const config = require('../../../config');
 
 module.exports = {
@@ -44,5 +44,23 @@ module.exports = {
         // attach user info to the request context
         req.user = decodedToken;
         return next();
+    },
+
+    rateLimit: (req, res, next) => {
+        const isRequestAllowed = rateLimitterService(req.user.email);
+        if (isRequestAllowed) {
+            return next();
+        }
+        return res
+            .status(429)
+            .json(
+                createResponse(
+                    false,
+                    [
+                        `You've reached limit for API requests ${config.rateLimit.allowedRequestsPerTimeDuration} per ${config.rateLimit.allowedRequestsPerTimeDuration} seconds`,
+                    ],
+                    ErrorType.TooManyRequests
+                )
+            );
     },
 };
