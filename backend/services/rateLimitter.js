@@ -6,7 +6,7 @@ function decrementRequestsLeft(userId) {
     const userRateLimittingData = rateLimitingCache.get(userId);
     rateLimitingCache.set(userId, {
         ...userRateLimittingData,
-        allowedRequestsLeft: userRateLimittingData - 1,
+        allowedRequestsLeft: userRateLimittingData.allowedRequestsLeft - 1,
     });
 }
 
