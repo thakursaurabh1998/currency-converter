@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Row, Select } from 'antd';
+import { Input, Row, Select } from 'antd';
 import * as HTTPRequests from '../utils/HTTPRequests';
 import { openNotification } from '../utils/NotificationUtility';
 
@@ -44,19 +44,22 @@ export default function SearchInput({ addCountryToList, baseCurrency }) {
   ));
   return (
     <Row className="Converter-search-bar">
-      <Select
-        showSearch
-        value={state.value}
-        style={{ width: 300 }}
-        placeholder="Search by country name.. (type atleast 3 chars)"
-        showArrow={false}
-        onSearch={handleSearch}
-        onChange={handleChange}
-        notFoundContent="No matches"
-        loading={isLoading}
-      >
-        {options}
-      </Select>
+      <Input.Group compact>
+        <Input disabled style={{ width: '30%' }} prefix="Country" />
+        <Select
+          showSearch
+          value={state.value}
+          style={{ width: '70%' }}
+          placeholder="(type atleast 3 chars)"
+          showArrow={false}
+          onSearch={handleSearch}
+          onChange={handleChange}
+          notFoundContent="No matches"
+          loading={isLoading}
+        >
+          {options}
+        </Select>
+      </Input.Group>
     </Row>
   );
 }

@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Row, Input, Select, InputNumber } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row } from 'antd';
 import cc from '../static/cc.svg';
 import ConvertingTable from './ConvertingTable';
+import BaseValueAndCurrency from './BaseValueAndCurrency';
 import SearchInput from './SearchInput';
+import * as HTTPRequests from '../utils/HTTPRequests';
 
 function Header() {
   return (
@@ -15,34 +17,19 @@ function Header() {
   );
 }
 
-function BaseValueAndCurrency({ updateBaseCurrency, updateBaseValue, baseValue, baseCurrency }) {
-  return (
-    <Row className="Converter-base-change">
-      <Input.Group compact>
-        <Select style={{ width: '25%' }} onChange={updateBaseCurrency} value={baseCurrency}>
-          {['SEK', 'USD', 'EUR', 'INR'].map((currencyCode) => (
-            <Select.Option value={currencyCode} key={currencyCode}>
-              {currencyCode}
-            </Select.Option>
-          ))}
-        </Select>
-        <InputNumber
-          style={{ width: '75%' }}
-          type="number"
-          onChange={updateBaseValue}
-          value={baseValue}
-        />
-      </Input.Group>
-    </Row>
-  );
-}
-
 export default function Converter() {
   const [state, setState] = useState({
     countries: [],
     baseValue: 1,
     baseCurrency: 'SEK',
+    currenciesList: [],
   });
+
+  useEffect(() => {
+    HTTPRequests.getCurrenciesList().then((currenciesList) => {
+      setState({ ...state, currenciesList });
+    });
+  }, []);
 
   const addCountryToList = (countryObject) => {
     setState({ ...state, countries: [...state.countries, countryObject] });
@@ -53,19 +40,20 @@ export default function Converter() {
   };
 
   const updateBaseCurrency = (baseCurrency) => {
-    setState({ ...state, baseCurrency });
+    setState({ ...state, baseCurrency, countries: [] });
   };
 
   return (
     <div className="Converter-page">
       <Header />
-      <SearchInput addCountryToList={addCountryToList} baseCurrency={state.baseCurrency} />
       <BaseValueAndCurrency
+        currenciesList={state.currenciesList}
         updateBaseCurrency={updateBaseCurrency}
         updateBaseValue={updateBaseValue}
         baseValue={state.baseValue}
         baseCurrency={state.baseCurrency}
       />
+      <SearchInput addCountryToList={addCountryToList} baseCurrency={state.baseCurrency} />
       <ConvertingTable countries={state.countries} baseValue={state.baseValue} />
     </div>
   );

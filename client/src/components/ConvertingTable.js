@@ -3,9 +3,9 @@ import { Row, Table, Tag, Col, Button } from 'antd';
 
 const colorMap = {
   code: 'volcano',
+  name: 'blue',
   symbol: 'green',
   rate: 'geekblue',
-  name: 'blue',
 };
 
 export default function ConvertingTable({ countries, baseValue }) {
@@ -23,7 +23,8 @@ export default function ConvertingTable({ countries, baseValue }) {
     {
       title: () => (
         <>
-          OfficialCurrencies{' '}
+          OfficialCurrencies
+          <br />
           {Object.keys(colorMap).map((key) => (
             <Tag color={colorMap[key]}>{key.toUpperCase()}</Tag>
           ))}
@@ -35,15 +36,17 @@ export default function ConvertingTable({ countries, baseValue }) {
         <>
           {officialCurrencies.map((currency) => (
             <Row>
-              <Col style={{ marginTop: 5, marginBottom: 5 }}>
+              <Col span={16} style={{ marginTop: 5, marginBottom: 5 }}>
                 {Object.keys(currency).map((key) => (
                   <Tag color={colorMap[key]} key={colorMap[key]}>
                     {key === 'rate' ? currency[key].toFixed(2) : currency[key]}
                   </Tag>
                 ))}
               </Col>
-              <Col offset={3} span={8}>
-                <Button type="primary" danger>{`${currency.symbol} ${(currency.rate * baseValue).toFixed(2)}`}</Button>
+              <Col span={8}>
+                <Button style={{ width: '100%' }} type="primary" danger>{`${currency.symbol} ${(
+                  currency.rate * baseValue
+                ).toFixed(2)}`}</Button>
               </Col>
             </Row>
           ))}
