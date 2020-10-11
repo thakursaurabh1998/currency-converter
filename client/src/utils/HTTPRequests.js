@@ -37,3 +37,22 @@ export async function searchCountryInfo(country, baseCurrency) {
     throw new Error('Failed to fetch data!');
   }
 }
+
+export async function getCurrenciesList() {
+  try {
+    const response = await Axios.get(`${baseUrl}/v1/currency/all`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    // Relogin in case of 401
+    if (error.response.status === 401) {
+      localStorage.clear();
+      window.location.replace('/login');
+    }
+    throw new Error('Failed to fetch data!');
+  }
+}
