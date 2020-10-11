@@ -5,6 +5,7 @@ import ConvertingTable from './ConvertingTable';
 import BaseValueAndCurrency from './BaseValueAndCurrency';
 import SearchInput from './SearchInput';
 import * as HTTPRequests from '../utils/HTTPRequests';
+import { openNotification } from '../utils/NotificationUtility';
 
 function Header() {
   return (
@@ -18,17 +19,20 @@ function Header() {
 }
 
 export default function Converter() {
+  const [currenciesList, setCurrenciesList] = useState([]);
+
   const [state, setState] = useState({
     countries: [],
     baseValue: 1,
     baseCurrency: 'SEK',
-    currenciesList: [],
   });
 
   useEffect(() => {
-    HTTPRequests.getCurrenciesList().then((currenciesList) => {
-      setState({ ...state, currenciesList });
-    });
+    HTTPRequests.getCurrenciesList()
+      .then(setCurrenciesList)
+      .catch((error) => {
+        openNotification('BANNER', 'error', error.message);
+      });
   }, []);
 
   const addCountryToList = (countryObject) => {
@@ -47,7 +51,7 @@ export default function Converter() {
     <div className="Converter-page">
       <Header />
       <BaseValueAndCurrency
-        currenciesList={state.currenciesList}
+        currenciesList={currenciesList}
         updateBaseCurrency={updateBaseCurrency}
         updateBaseValue={updateBaseValue}
         baseValue={state.baseValue}
