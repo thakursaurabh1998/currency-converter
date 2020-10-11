@@ -1,16 +1,13 @@
 const externalServices = require('./external');
-const Cache = require('../utils/cache');
-const { time } = require('../utils/constants');
-
-const cache = new Cache(5 * time.minute);
+const { currencyCache } = require('../utils/localCache');
 
 const CURRENCY = 'CURRENCY';
 
 async function fetchAllCurrencyData() {
-    let currencyData = cache.get(CURRENCY);
+    let currencyData = currencyCache.get(CURRENCY);
     if (!currencyData) {
         currencyData = await externalServices.getCurrencyData();
-        cache.set(CURRENCY, currencyData);
+        currencyCache.set(CURRENCY, currencyData);
     }
     return currencyData;
 }

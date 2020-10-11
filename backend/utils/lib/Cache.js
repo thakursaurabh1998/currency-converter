@@ -1,11 +1,11 @@
-const { getCurrentEpochTime } = require('./helper');
+const { getCurrentEpochTime } = require('../helper');
 
 class Cache {
     /**
      * Simple Cache
-     * @param {number} ttl time to live in seconds
+     * @param {number} [ttl] time to live in seconds
      */
-    constructor(ttl) {
+    constructor(ttl = Infinity) {
         this.cache = new Map();
         this.ttl = ttl;
     }
@@ -13,6 +13,9 @@ class Cache {
     get(key) {
         const data = this.cache.get(key);
         if (data) {
+            if (this.ttl === Infinity) {
+                return data.value;
+            }
             const currentEpochTime = getCurrentEpochTime();
             if (currentEpochTime < data.expiryTime) {
                 return data.value;
@@ -24,10 +27,13 @@ class Cache {
     }
 
     set(key, value) {
-        return this.cache.set(key, {
+        const toSave = {
             value,
-            expiryTime: getCurrentEpochTime() + this.ttl,
-        });
+        };
+        if (this.ttl !== Infinity) {
+            toSave.expiryTime = getCurrentEpochTime() + this.ttl;
+        }
+        return this.cache.set(key, toSave);
     }
 }
 
