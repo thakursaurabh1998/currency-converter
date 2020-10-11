@@ -57,7 +57,7 @@ module.exports = {
                 createResponse(
                     false,
                     [
-                        `You've reached limit for API requests ${config.rateLimit.allowedRequestsPerTimeDuration} per ${config.rateLimit.allowedRequestsPerTimeDuration} seconds`,
+                        `You've reached limit for API requests of ${config.rateLimit.allowedRequestsPerTimeDuration} requests per ${config.rateLimit.timeDurationInSeconds} seconds, try again in some time`,
                     ],
                     ErrorType.TooManyRequests
                 )
