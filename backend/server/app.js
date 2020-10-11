@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const path = require('path');
 
 const config = require('../config');
 const v1Routes = require('./v1/routes');
@@ -14,7 +15,19 @@ app.use(requestLogger);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-if (config.environment !== 'production') {
+app.get('/health', (req, res) => {
+    res.status(200).json(createResponse(true, null, "I'm Healthy!"));
+});
+
+app.use('/v1', v1Routes);
+
+if (config.environment === 'production') {
+    app.use(express.static(path.resolve(__dirname, '../', '../client', 'build')));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, '../', '../client', 'build', 'index.html'));
+    });
+} else {
     app.use(
         cors({
             origin: ['http://localhost:3000'],
@@ -24,12 +37,6 @@ if (config.environment !== 'production') {
         })
     );
 }
-
-app.get('/health', (req, res) => {
-    res.status(200).json(createResponse(true, null, "I'm Healthy!"));
-});
-
-app.use('/v1', v1Routes);
 
 app.use((req, res) => {
     res.status(404).json(createResponse(false, ['Not Found']));
