@@ -65,7 +65,8 @@ Setting up the project in your local system is really easy and can be done in th
     docker build --tag cc-server .
     ```
 
-    This will build a docker image of the application.
+    This will build a docker image of the application. You'll also see the tests running.
+    Additionally you can run `npm test --prefix=backend` on the root directory.
 
 4. Now to start the app using the above built docker image run the command:
 
