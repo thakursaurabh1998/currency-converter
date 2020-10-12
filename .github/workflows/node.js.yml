@@ -24,5 +24,15 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: set env
+      env: 
+        JWT_SECRET: sample
+        PORT: 8081
+        FIXER_ACCESS_KEY: sample
+        SAMPLE_EMAIL: abc@xyz.com
+        SAMPLE_PASSWORD: abcdef
+        NODE_ENV: production
+        TIME_DURATION: 60
+        ALLOWED_REQUESTS: 30
     - run: npm ci --prefix=backend
     - run: npm test --prefix=backend
