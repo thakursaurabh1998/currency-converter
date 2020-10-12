@@ -15,6 +15,17 @@ app.use(requestLogger);
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+if (config.environment !== 'production') {
+    app.use(
+        cors({
+            origin: ['http://localhost:3000'],
+            credentials: true,
+            allowedHeaders:
+                'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token, X-SC-JWT, Cache-Control',
+        })
+    );
+}
+
 app.get('/health', (req, res) => {
     res.status(200).json(createResponse(true, null, "I'm Healthy!"));
 });
@@ -27,15 +38,6 @@ if (config.environment === 'production') {
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, '../', '../client', 'build', 'index.html'));
     });
-} else {
-    app.use(
-        cors({
-            origin: ['http://localhost:3000'],
-            credentials: true,
-            allowedHeaders:
-                'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token, X-SC-JWT, Cache-Control',
-        })
-    );
 }
 
 app.use((req, res) => {
