@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Row } from 'antd';
-import cc from '../static/cc.svg';
-import ConvertingTable from './ConvertingTable';
-import BaseValueAndCurrency from './BaseValueAndCurrency';
-import SearchInput from './SearchInput';
-import * as HTTPRequests from '../utils/HTTPRequests';
-import { openNotification } from '../utils/NotificationUtility';
+import cc from '../../static/cc.svg';
+import ConvertingTable from './components/ConvertingTable';
+import BaseValueAndCurrency from './components/BaseValueAndCurrency';
+import SearchInput from './components/SearchInput';
+import * as HTTPRequests from './httpRequests';
+import { openNotification } from '../../utils/notification';
 
 function Header() {
   return (

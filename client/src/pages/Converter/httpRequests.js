@@ -1,23 +1,10 @@
 import Axios from 'axios';
 
-const baseUrl =
-  process.env.NODE_ENV === 'production' ? window.location.origin : 'http://localhost:8081';
-
-export async function login(email, password) {
-  try {
-    const response = await Axios.post(`${baseUrl}/v1/auth/login`, {
-      email,
-      password,
-    });
-    return response.data.data.accessToken;
-  } catch (error) {
-    throw new Error('Authentication failed!');
-  }
-}
+import { SearchCountryUrl, GetAllCurrenciesUrl } from '../../constants/urls';
 
 export async function searchCountryInfo(country, baseCurrency) {
   try {
-    const response = await Axios.get(`${baseUrl}/v1/country/search`, {
+    const response = await Axios.get(SearchCountryUrl, {
       params: {
         query: country,
         baseCurrency,
@@ -30,7 +17,7 @@ export async function searchCountryInfo(country, baseCurrency) {
     return response.data.data.countries;
   } catch (error) {
     // Relogin in case of 401
-    if (error.response.status === 401) {
+    if (error?.response?.status === 401) {
       localStorage.clear();
       window.location.replace('/login');
     }
@@ -40,7 +27,7 @@ export async function searchCountryInfo(country, baseCurrency) {
 
 export async function getCurrenciesList() {
   try {
-    const response = await Axios.get(`${baseUrl}/v1/currency/all`, {
+    const response = await Axios.get(GetAllCurrenciesUrl, {
       headers: {
         authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
@@ -49,7 +36,8 @@ export async function getCurrenciesList() {
     return response.data.data;
   } catch (error) {
     // Relogin in case of 401
-    if (error.response && error.response.status === 401) {
+    console.log(error)
+    if (error?.response?.status === 401) {
       localStorage.clear();
       window.location.replace('/login');
     }

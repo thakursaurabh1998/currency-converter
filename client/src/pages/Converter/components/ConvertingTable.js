@@ -26,7 +26,9 @@ export default function ConvertingTable({ countries, baseValue }) {
           OfficialCurrencies
           <br />
           {Object.keys(colorMap).map((key) => (
-            <Tag color={colorMap[key]} key={key}>{key.toUpperCase()}</Tag>
+            <Tag color={colorMap[key]} key={key}>
+              {key.toUpperCase()}
+            </Tag>
           ))}
         </>
       ),

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Input, Row, Select } from 'antd';
-import * as HTTPRequests from '../utils/HTTPRequests';
-import { debounce } from '../utils/helper';
-import { openNotification } from '../utils/NotificationUtility';
+import * as HTTPRequests from '../httpRequests';
+import debounce from '../../../utils/debounce';
+import { openNotification } from '../../../utils/notification';
 
 export default function SearchInput({ addCountryToList, baseCurrency }) {
   const [isLoading, setLoading] = useState(false);

@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Converter from './Converter.js';
-import Loading from './Loading.js';
-import Login from './Login';
-import NotFound from './NotFound';
-import RoutesEnum from '../utils/RoutesEnum';
+import Converter from './pages/Converter';
+import Login from './pages/Login';
+import Loading from './common-components/Loading';
+import NotFound from './common-components/NotFound';
+import { RoutesEnum } from './constants';
 
 function NewRoute(path, component) {
   return {

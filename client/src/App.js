@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import InternalRouter from './components/InternalRouter';
+import AppRouter from './Router';
 import { UserContext } from './store/contexts';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <InternalRouter isAuthenticated={isAuthenticated} />
+      <AppRouter isAuthenticated={isAuthenticated} />
     </div>
   );
 }
