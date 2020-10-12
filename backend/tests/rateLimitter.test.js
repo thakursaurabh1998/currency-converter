@@ -51,6 +51,11 @@ describe('Rate limitter', () => {
                     lastResetTime: getCurrentEpochTime() - 61,
                 });
 
+                rateLimitCacheGetStub.onCall(1).returns({
+                    allowedRequestsLeft: 30,
+                    lastResetTime: getCurrentEpochTime() - 61,
+                });
+
                 const isAllowed = rateLimit(userId);
                 assert.ok(isAllowed);
             });
