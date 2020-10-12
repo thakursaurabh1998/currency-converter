@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Input, Row, Select } from 'antd';
+
 import * as HTTPRequests from '../httpRequests';
 import debounce from '../../../utils/debounce';
 import { openNotification } from '../../../utils/notification';
@@ -65,3 +67,12 @@ export default function SearchInput({ addCountryToList, baseCurrency }) {
     </Row>
   );
 }
+
+SearchInput.defaultProps = {
+  baseCurrency: 'SEK',
+};
+
+SearchInput.propTypes = {
+  addCountryToList: PropTypes.func.isRequired,
+  baseCurrency: PropTypes.string,
+};

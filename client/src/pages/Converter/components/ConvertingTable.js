@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Row, Table, Tag, Col, Button } from 'antd';
 
 const colorMap = {
@@ -23,7 +24,7 @@ export default function ConvertingTable({ countries, baseValue }) {
     {
       title: () => (
         <>
-          OfficialCurrencies
+          Official Currencies
           <br />
           {Object.keys(colorMap).map((key) => (
             <Tag color={colorMap[key]} key={key}>
@@ -37,10 +38,10 @@ export default function ConvertingTable({ countries, baseValue }) {
       render: (officialCurrencies) => (
         <>
           {officialCurrencies.map((currency) => (
-            <Row>
+            <Row key={currency}>
               <Col span={16} style={{ marginTop: 5, marginBottom: 5 }}>
                 {Object.keys(currency).map((key) => (
-                  <Tag color={colorMap[key]} key={colorMap[key]}>
+                  <Tag color={colorMap[key]} key={key}>
                     {key === 'rate' ? currency[key].toFixed(2) : currency[key]}
                   </Tag>
                 ))}
@@ -68,3 +69,12 @@ export default function ConvertingTable({ countries, baseValue }) {
     </Row>
   );
 }
+
+ConvertingTable.defaultProps = {
+  countries: [],
+};
+
+ConvertingTable.propTypes = {
+  countries: PropTypes.arrayOf(PropTypes.string),
+  baseValue: PropTypes.number.isRequired,
+};
