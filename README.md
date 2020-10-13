@@ -36,7 +36,7 @@ I tried to create the best possible architecture and kept the project modular. I
 
 -   Typescript could have been used as the language of choice because of a lot of advantages, but because this was a small project I decided to go with JS which also helped in fast development. But I recommend using Typescript for big projects.
 
-## Design choices mmade due to time constraint (can be made better)
+## Design choices made due to time constraint (can be made better)
 
 -   Rather than static auth, better authentication flow can be used, I prefer using OAuth. Also managing the access token can be improved, can include refresh token flow and generation of access token should be taken care with an API key.
 
@@ -45,6 +45,8 @@ I tried to create the best possible architecture and kept the project modular. I
 -   There is some issue with ant-design which I wasn't able to solve. During build process ant-design wasn't able to prune the components not used in the client app, I dug and found that there is some issue in tree shaking during build.
 
 -   There can be separate api for searching a country and another api to fetch the data in detail. This will help us to use an npm package of countries list (which can result in fast search) rather than calling the external service to search for a country name.
+
+-   Login page is mobile responsive but the currency converter page isn't.
 
 ## Environment variables
 
