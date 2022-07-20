@@ -1,8 +1,5 @@
 # Currency Converter App
 
-I have created the application as it was explained in the email. It was really fun and I learnt some new things too.
-I tried to create the best possible architecture and kept the project modular. I also used the best coding practices upto full extent.
-
 | Login Page                                                       | Currency conversion area                                               |
 | ---------------------------------------------------------------- | ---------------------------------------------------------------------- |
 | <img alt="Login page" width="331" src="./demo-images/login.png"> | <img alt="Currency conversion" width="700" src="./demo-images/cc.png"> |
